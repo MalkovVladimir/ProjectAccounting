@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import PostsManager from '@/components/PostsManager'
+import Welcome from '@/components/Welcome'
 import Auth from '@okta/okta-vue'
 
 Vue.use(Auth, {
@@ -32,6 +33,11 @@ let router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/welcome',
+      name: 'Welcome',
+      component: Welcome
     }
   ]
 })
