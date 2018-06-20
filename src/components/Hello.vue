@@ -1,22 +1,26 @@
 <template>
-  <div class="hero">
-    <div>
-      <h1 class="display-3">Hello World</h1>
-      <p class="lead">This is the homepage of your vue app</p>
+  <div>
+    <div class="simple-page flex">
+      <p>HELLO</p>
     </div>
   </div>
 </template>
 
+
 <style>
-  .hero {
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  .hero .lead {
-    font-weight: 200;
-    font-size: 1.5rem;
-  }
+.draggable-item {
+  width: 6em;
+  height: 4em;
+  background-color: whitesmoke;
+  border: 1px solid darkgray;
+  margin: 1em;
+}
+.flex {
+  display: flex;
+}
+.container {
+  min-width: 2em;
+  min-height: 2em;
+  background-color: azure;
+}
 </style>
