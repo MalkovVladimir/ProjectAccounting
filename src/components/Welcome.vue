@@ -1,25 +1,27 @@
 <template>
 <div id="GeneralPlaceholder" class="flex">
   <div id="General" class="flex-col" :ref="chosenPair = AccountValuePairs[ChosenIncomingData(0, 3)]">
+    Завершите проводку:
+    <p>
+      поступление в {{ chosenPair.value }}
+    </p>
+
+    <div class="widget-zone flex">
       <overlay v-show="!show"></overlay>
-      Завершите проводку:
-      <p>
-        поступление в {{ chosenPair.value }}
-      </p>
-      <div class="widget-placeholder flex">
         <div class="flex-col flex">
           <div 
           id="div-draggable" 
           class="widget" 
           draggable="true" 
-          @drag="OnDrag">
+          @drag="OnDrag"
+          @dragend="OnDragEnd">
             <div v-show="show" class="flex">
               {{ chosenPair.incomingData[ChosenIncomingData(0, 2)] }}
             </div>
           </div>
-        </div>
+        </div>  
 
-        <div>
+        <div class="widget-placeholder">
           <div 
           class="widget" 
           v-for="pair in AccountValuePairs" 
@@ -32,7 +34,7 @@
           </div>
         </div>
       </div>
-  </div>
+    </div>  
   </div>
 </template>
 
@@ -71,7 +73,13 @@ export default {
     OnDrag: function () {
       this.show = false
     },
+    OnDragEnd: function () {
+      if (this.show === false) {
+        this.show = true
+      }
+    },
     OnDrop: function () {
+      alert(this.chosenPair.incomingData[0] + ' ' + this.chosenPair.incomingData[0])
       this.show = true
       this.isDrag = false
       this.AccountValuePairs = [{
@@ -126,9 +134,15 @@ p {
     align-self: stretch;
     width: initial;
 }
-.widget-placeholder {
+.widget-zone {
     background-color: whitesmoke;
     align-items: center;
+    position: relative;
+    border-top: 2px solid darkslategray;
+}
+.widget-placeholder {
+    z-index: 200;
+    position: relative;
 }
 .flex {
     display: flex;
@@ -142,19 +156,20 @@ p {
     margin: 2em;
     align-items: center;
     justify-content: center;
-    z-index: 200;
 }
 .flex-col {
     flex-direction: column;
 }
 .dragstyle {
-    background-color: lightgoldenrodyellow;
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
 }
 .overlay {
     display: flex;
     position: absolute;
-    width: 100%; 
-    height: 100%; 
+    width: initial; 
+    height: inherit; 
     top: 0; 
     left: 0;
     right: 0;
