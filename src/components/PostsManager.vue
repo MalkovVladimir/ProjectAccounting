@@ -8,7 +8,8 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Title</th>
+              <th>Value</th>
+              <th>Account</th>
               <th>Updated At</th>
               <th>&nbsp;</th>
             </tr>
@@ -16,7 +17,8 @@
           <tbody>
             <tr v-for="post in posts" :key="post.id">
               <td>{{ post.id }}</td>
-              <td>{{ post.title }}</td>
+              <td>{{ post.value }}</td>
+              <td>{{ post.account }}</td>
               <td>{{ post.updatedAt }}</td>
               <td class="text-right">
                 <a href="#" @click.prevent="populatePostToEdit(post)">Edit</a> - 
@@ -29,8 +31,11 @@
       <b-col lg="3">
         <b-card :title="(model.id ? 'Edit Post ID#' + model.id : 'New Post')">
           <form @submit.prevent="savePost">
-            <b-form-group label="Title">
-              <b-form-input type="text" v-model="model.title"></b-form-input>
+            <b-form-group label="Value">
+              <b-form-input type="text" v-model="model.value"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Account">
+              <b-form-input type="text" v-model="model.account"></b-form-input>
             </b-form-group>
             <b-form-group label="Body">
               <b-form-textarea rows="4" v-model="model.body"></b-form-textarea>

@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 // For ease of this tutorial, we are going to use SQLite to limit dependencies
 let database = new Sequelize({
   dialect: 'sqlite',
-  storage: './test.sqlite'
+  storage: './tasksType1.sqlite'
 })
 
 // Define our Post model
