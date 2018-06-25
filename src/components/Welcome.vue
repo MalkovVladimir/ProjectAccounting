@@ -1,17 +1,20 @@
 <template>
 <div id="GeneralPlaceholder" class="flex">
   <div id="General" class="flex-col" :ref="chosenPair = AccountValuePairs[ChosenIncomingData(0, 3)]">
-    Завершите проводку:
-    <p>
-      поступление в {{ chosenPair.value }}
-    </p>
+    <div class="header flex robotoFont">  
+      <p>
+        Завершите проводку:
+        <br />
+        поступление в {{ chosenPair.value }}
+      </p>
+    </div>
 
     <div class="widget-zone flex">
       <overlay v-show="!show"></overlay>
         <div class="flex-col flex">
           <div 
           id="div-draggable" 
-          class="widget" 
+          class="widget robotoFont" 
           draggable="true" 
           @drag="OnDrag"
           @dragend="OnDragEnd">
@@ -23,14 +26,14 @@
 
         <div class="widget-placeholder">
           <div 
-          class="widget" 
+          class="container robotoFont" 
           v-for="pair in AccountValuePairs" 
           :key="pair.id" 
           :class="{dragstyle: pair.isDrag}"
           @dragover.prevent="pair.isDrag = true" 
           @dragleave="pair.isDrag = false" 
           @drop="OnDrop">
-            Счет {{ pair.account }}
+           Счет {{ pair.account }}
           </div>
         </div>
       </div>
@@ -113,16 +116,18 @@ export default {
 }
 </script>
 
-
 <style>
 p {
-    margin-bottom: 0px;
+    margin: 1em;
 }
 #div-draggable{
     cursor: move;
+    /*border: 2px solid rgba(0,0,0,.2);*/
+    border: 2px solid white;
 }
 #GeneralPlaceholder {
-    margin-top: 3em;
+    padding-top: 3em;
+    padding-bottom: 3em;
     align-items: center;
     justify-content: center;
 }
@@ -130,15 +135,23 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid darkslategray;
     align-self: stretch;
     width: initial;
+    background-color: rgba(250, 250, 250, 1);
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.24), 0px 0px 2px rgba(0,0,0,0.12);
+}
+.header {
+    background-color: white;
+    align-self: stretch;
+    color: rgba(0, 0, 0, 0.54);
+    font-weight: 400;
+    z-index: 10;
+    box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.24);
 }
 .widget-zone {
-    background-color: whitesmoke;
     align-items: center;
     position: relative;
-    border-top: 2px solid darkslategray;
+    background: linear-gradient(#89f7fe, #66a6ff);
 }
 .widget-placeholder {
     z-index: 200;
@@ -149,13 +162,30 @@ p {
 }
 .widget {
     display: flex;
-    width: 6em;
-    height: 6em;
-    background-color: white;
-    border: 1px solid lightslategray;
+    width: 7em;
+    height: 7em;
     margin: 2em;
     align-items: center;
     justify-content: center;
+    color: rgba(0, 0, 0, 0.87);
+    border: 1px solid rgba(0, 0, 0, .03);
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.24), 0px 0px 2px rgba(0,0,0,0.12);
+    background-color: #fff;
+    font-weight: 400;
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.1);
+    border: 2px dashed rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.9);
+    width: 7em;
+    height: 7em;
+    margin: 2em;
+}
+.robotoFont {
+  font-family: Roboto,"Helvetica Neue",sans-serif
 }
 .flex-col {
     flex-direction: column;
@@ -164,6 +194,7 @@ p {
     -webkit-transform: scale(1.2);
     -ms-transform: scale(1.2);
     transform: scale(1.2);
+    border: 2px dashed rgba(255, 255, 255, 0.9);
 }
 .overlay {
     display: flex;
