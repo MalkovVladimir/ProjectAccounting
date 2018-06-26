@@ -73,7 +73,13 @@ export default {
   methods: {
     ChoseAccount: function (min, max, reGenerate) {
       if (this.chosenID === -1 || reGenerate) {
-        this.chosenID = Math.floor(Math.random() * (max - min)) + min
+        var generated = Math.floor(Math.random() * (max - min)) + min
+
+        while (generated === this.chosenID) {
+          generated = Math.floor(Math.random() * (max - min)) + min
+        }
+
+        this.chosenID = generated
       }
 
       return this.chosenID
@@ -87,8 +93,6 @@ export default {
       }
     },
     OnDrop: function (event, id) {
-      // alert(this.AccountValuePairs[generatedID].incomingData[0] + ' ' + this.AccountValuePairs[generatedID].incomingData[0])
-
       if (this.chosenID !== id) {
         alert('ошибка!')
         // event.target.classList.add('incorrect')
