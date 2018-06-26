@@ -1,12 +1,12 @@
 <template>
 <div id="GeneralPlaceholder" class="flex">
-  <div id="General" class="flex-col" :ref="chosenPair = AccountValuePairs[ChosenIncomingData(0, 3)]">
+  <div id="General" class="flex-col">
     <div class="header flex robotoFont">  
-      <p>
+      <div class="flex">
         Завершите проводку:
         <br />
-        поступление в {{ chosenPair.value }}
-      </p>
+        {{ AccountValuePairs[ChoseAccount(0, 3, false)].value }}
+      </div>
     </div>
 
     <div class="widget-zone flex">
@@ -16,12 +16,12 @@
           id="div-draggable" 
           class="widget robotoFont" 
           draggable="true" 
-          @drag="OnDrag"
-          @dragend="OnDragEnd">
-            <div v-show="show" class="flex">
-              {{ chosenPair.incomingData[ChosenIncomingData(0, 2)] }}
-            </div>
+          v-show="show" 
+          @dragend ="OnDragEnd"
+          @drag="OnDrag">
+            {{ AccountValuePairs[ChoseAccount(0, 3, false)].incomingData[0] }}
           </div>
+          <div v-show="!show" class="widgetGhost"></div>
         </div>  
 
         <div class="widget-placeholder">
@@ -32,7 +32,7 @@
           :class="{dragstyle: pair.isDrag}"
           @dragover.prevent="pair.isDrag = true" 
           @dragleave="pair.isDrag = false" 
-          @drop="OnDrop">
+          @drop="OnDrop($event, pair.id)">
            Счет {{ pair.account }}
           </div>
         </div>
@@ -47,7 +47,7 @@ export default {
     return {
       AccountValuePairs: [{
         id: 0,
-        value: 'касса',
+        value: 'Расчеты c покупателями, заказчиками',
         account: '50',
         incomingData: [ 'зарплата', 'что-то' ],
         isDrag: false
@@ -61,17 +61,22 @@ export default {
       },
       {
         id: 2,
-        value: 'товары',
-        account: '41',
-        incomingData: [ 'микросхемы', 'корпуса' ],
+        value: 'Расчеты с разными дебиторами и кредиторами',
+        account: '76',
+        incomingData: [ 'Учет суммы НДС в составе затрат на ремонт автомобиля', 'корпуса' ],
         isDrag: false
       }],
-      show: true
+      show: true,
+      chosenID: -1
     }
   },
   methods: {
-    ChosenIncomingData: function (min, max) {
-      return Math.floor(Math.random() * (max - min)) + min
+    ChoseAccount: function (min, max, reGenerate) {
+      if (this.chosenID === -1 || reGenerate) {
+        this.chosenID = Math.floor(Math.random() * (max - min)) + min
+      }
+
+      return this.chosenID
     },
     OnDrag: function () {
       this.show = false
@@ -81,29 +86,38 @@ export default {
         this.show = true
       }
     },
-    OnDrop: function () {
-      alert(this.chosenPair.incomingData[0] + ' ' + this.chosenPair.incomingData[0])
+    OnDrop: function (event, id) {
+      // alert(this.AccountValuePairs[generatedID].incomingData[0] + ' ' + this.AccountValuePairs[generatedID].incomingData[0])
+
+      if (this.chosenID !== id) {
+        alert('ошибка!')
+        // event.target.classList.add('incorrect')
+      } else {
+        alert('правильно!')
+      }
+
+      this.chosenID = this.ChoseAccount(0, 3, true)
       this.show = true
       this.isDrag = false
       this.AccountValuePairs = [{
         id: 0,
-        value: 'касса!!!',
-        account: '50!!!',
-        incomingData: [ 'зарплата!!!', 'что-то!!!' ],
+        value: 'Расчеты с персоналом по оплате труда',
+        account: '70',
+        incomingData: [ 'заработная плата', 'Начислены отпускные гл. бухгалтеру' ],
         isDrag: false
       },
       {
         id: 1,
-        value: 'расчетные счета!!!',
-        account: '51!!!',
-        incomingData: [ 'зачисление!!!', 'зачисление2!!!' ],
+        value: 'Расчеты по соц страхованию и обеспечению',
+        account: '69',
+        incomingData: [ 'Cтраховые взносы работнику', 'зачисление2!!!' ],
         isDrag: false
       },
       {
         id: 2,
-        value: 'товары!!!',
-        account: '41!!!',
-        incomingData: [ 'микросхемы!!!', 'корпуса!!!' ],
+        value: 'Общепроизводственные затраты',
+        account: '25',
+        incomingData: [ 'Принятие к учету материалов', 'корпуса!!!' ],
         isDrag: false
       }]
     }
@@ -143,15 +157,24 @@ p {
 .header {
     background-color: white;
     align-self: stretch;
+    align-items: center;
+    justify-content: center;
     color: rgba(0, 0, 0, 0.54);
     font-weight: 400;
     z-index: 10;
-    box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.24);
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.24);
+    flex-direction: column;
+    text-align: center;
+}
+.header:first-child {
+    padding: 1em;
 }
 .widget-zone {
     align-items: center;
     position: relative;
     background: linear-gradient(#89f7fe, #66a6ff);
+    align-self: stretch;
+    justify-content: center;
 }
 .widget-placeholder {
     z-index: 200;
@@ -172,6 +195,13 @@ p {
     box-shadow: 0px 2px 2px rgba(0,0,0,0.24), 0px 0px 2px rgba(0,0,0,0.12);
     background-color: #fff;
     font-weight: 400;
+    text-align: center;
+}
+.widgetGhost {
+    display: flex;
+    width: 7em;
+    height: 7em;
+    margin: 2em;
 }
 .container {
     display: flex;
@@ -185,7 +215,7 @@ p {
     margin: 2em;
 }
 .robotoFont {
-  font-family: Roboto,"Helvetica Neue",sans-serif
+    font-family: Roboto,"Helvetica Neue",sans-serif
 }
 .flex-col {
     flex-direction: column;
@@ -207,5 +237,28 @@ p {
     bottom: 0;
     background-color: rgba(0,0,0,0.3);
     z-index: 100;
+}
+.incorrect {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 </style>
