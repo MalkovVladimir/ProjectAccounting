@@ -94,8 +94,20 @@ export default {
     },
     OnDrop: function (event, id) {
       if (this.chosenID !== id) {
-        alert('ошибка!')
-        // event.target.classList.add('incorrect')
+        // alert('ошибка!')
+        event.target.animate([{
+          transform: 'translate3d(-1px, 0, 0)'
+        }, {
+          transform: 'translate3d(2px, 0, 0)'
+        }, {
+          transform: 'translate3d(-4px, 0, 0)'
+        }, {
+          transform: 'translate3d(4px, 0, 0)'
+        }],
+        {
+          duration: 300,
+          iterations: 1
+        })
       } else {
         alert('правильно!')
       }
